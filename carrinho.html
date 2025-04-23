@@ -1,0 +1,570 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Carrinho - Brasil Mundo Imperial</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: #0a0a0a;
+            color: white;
+        }
+        .notification-badge {
+            position: absolute;
+            top: -5px;
+            right: -5px;
+            background-color: #00c2ff;
+            color: black;
+            border-radius: 50%;
+            width: 18px;
+            height: 18px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 12px;
+            font-weight: bold;
+        }
+        .cyan-text {
+            color: #00c2ff;
+        }
+        .cyan-button {
+            border: 2px solid #00c2ff;
+            color: #00c2ff;
+            transition: all 0.3s ease;
+            border-radius: 0.375rem;
+        }
+        .cyan-button:hover {
+            background-color: rgba(0, 194, 255, 0.1);
+        }
+        .login-button {
+            background-color: transparent;
+            border: 2px solid #00c2ff;
+            color: #00c2ff;
+            transition: all 0.3s ease;
+            border-radius: 9999px;
+        }
+        .login-button:hover {
+            background-color: #00c2ff;
+            color: black;
+        }
+        .nav-link {
+            font-size: 14px;
+            font-weight: 500;
+        }
+        .cart-item {
+            background-color: #111111;
+            border-radius: 0.5rem;
+            overflow: hidden;
+            transition: all 0.3s ease;
+        }
+        .cart-summary {
+            background-color: #111111;
+            border-radius: 0.5rem;
+            overflow: hidden;
+        }
+        .apply-button {
+            background-color: transparent;
+            border: 2px solid #00c2ff;
+            color: #00c2ff;
+            border-radius: 0.375rem;
+            transition: all 0.3s ease;
+        }
+        .apply-button:hover {
+            background-color: rgba(0, 194, 255, 0.1);
+        }
+        .checkout-button {
+            background-color: #00c2ff;
+            color: black;
+            border-radius: 0.375rem;
+            transition: all 0.3s ease;
+            font-weight: 600;
+        }
+        .checkout-button:hover {
+            background-color: #00a8db;
+        }
+        .coupon-input {
+            background-color: #1a1a1a;
+            border: 1px solid #333;
+            color: white;
+            border-radius: 0.375rem;
+        }
+        .coupon-input:focus {
+            border-color: #00c2ff;
+            outline: none;
+        }
+        .delete-button {
+            color: #00c2ff;
+            transition: all 0.3s ease;
+        }
+        .delete-button:hover {
+            color: #ff4d4d;
+        }
+        .toast {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            padding: 1rem;
+            border-radius: 0.5rem;
+            z-index: 50;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+            transform: translateX(150%);
+            transition: transform 0.3s ease;
+        }
+        .toast.show {
+            transform: translateX(0);
+        }
+        .toast.success {
+            background-color: #00c2ff;
+            color: black;
+        }
+        .toast.error {
+            background-color: #ff4d4d;
+            color: white;
+        }
+    </style>
+</head>
+<body>
+    <div class="container mx-auto px-4">
+        <!-- Header -->
+        <header class="py-4 flex justify-between items-center">
+            <!-- Logo -->
+            <div class="flex-shrink-0">
+                <a href="index.html">
+                    <svg width="80" height="30" viewBox="0 0 80 30" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M20.5 7C20.5 7 15 7 15 12.5C15 18 20.5 18 20.5 18H25.5C25.5 18 31 18 31 12.5C31 7 25.5 7 25.5 7H20.5Z" fill="white"/>
+                        <path d="M20.5 10L20.5 15M25.5 10V15M20.5 12.5H25.5" stroke="#0a0a0a" stroke-width="1.5"/>
+                        <text x="35" y="15" fill="#00c2ff" font-family="Poppins" font-size="12" font-weight="bold">bmi</text>
+                    </svg>
+                </a>
+            </div>
+            
+            <!-- Navigation -->
+            <nav class="hidden md:flex space-x-8">
+                <a href="index.html" class="nav-link text-white hover:text-gray-300">Página inicial</a>
+                <a href="loja.html" class="nav-link text-white hover:text-gray-300">Loja virtual</a>
+                <a href="#" class="nav-link text-white hover:text-gray-300">Termos e Regras</a>
+                <a href="#" class="nav-link text-white hover:text-gray-300">Entrar no Discord</a>
+            </nav>
+            
+            <!-- Right side buttons -->
+            <div class="flex items-center space-x-4">
+                <div class="relative">
+                    <a href="carrinho.html">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#00c2ff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <circle cx="9" cy="21" r="1"></circle>  stroke-linejoin="round">
+                            <circle cx="9" cy="21" r="1"></circle>
+                            <circle cx="20" cy="21" r="1"></circle>
+                            <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path>
+                        </svg>
+                        <span id="cart-count" class="notification-badge">0</span>
+                    </a>
+                </div>
+                <button class="login-button px-6 py-2 rounded-full text-sm font-bold">FAZER LOGIN</button>
+            </div>
+        </header>
+        
+        <!-- Main Content -->
+        <main class="py-8">
+            <h1 class="text-2xl font-bold mb-8">Itens adicionados ao carrinho</h1>
+            
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                <!-- Cart Items - Left Column (2/3 width on large screens) -->
+                <div class="lg:col-span-2">
+                    <div id="cart-items-container">
+                        <!-- Cart items will be dynamically added here -->
+                    </div>
+                    
+                    <!-- Empty cart message -->
+                    <div id="empty-cart-message" class="hidden text-center py-8">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="#666" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="mx-auto mb-4">
+                            <circle cx="9" cy="21" r="1"></circle>
+                            <circle cx="20" cy="21" r="1"></circle>
+                            <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path>
+                        </svg>
+                        <p class="text-gray-400">Seu carrinho está vazio</p>
+                        <a href="loja.html" class="cyan-button inline-block mt-4 px-6 py-2">Continuar comprando</a>
+                    </div>
+                </div>
+                
+                <!-- Order Summary - Right Column (1/3 width on large screens) -->
+                <div class="lg:col-span-1">
+                    <div class="cart-summary p-6">
+                        <h2 class="text-xl font-bold mb-6">Resumo do pedido</h2>
+                        
+                        <!-- Coupon Code -->
+                        <div class="mb-6">
+                            <p class="mb-2 text-sm">Aplicar código promocional</p>
+                            <div class="flex">
+                                <input type="text" id="coupon-input" placeholder="Cupom de desconto" class="coupon-input px-3 py-2 flex-grow mr-2">
+                                <button id="apply-coupon" class="apply-button px-4 py-2 text-sm font-medium">APLICAR</button>
+                            </div>
+                        </div>
+                        
+                        <!-- Order Details -->
+                        <div class="space-y-3 mb-6">
+                            <div class="flex justify-between">
+                                <span class="text-gray-400">Desconto aplicado</span>
+                                <span id="discount-applied" class="text-right">Nenhum</span>
+                            </div>
+                            <div class="flex justify-between">
+                                <span class="text-gray-400">Método de pagamento:</span>
+                                <span class="text-right text-[#00c2ff]">PIX</span>
+                            </div>
+                            <div class="flex justify-between font-bold">
+                                <span class="text-gray-400">Valor total do pedido:</span>
+                                <span id="total-price" class="text-right text-[#00c2ff]">R$ 0,00</span>
+                            </div>
+                        </div>
+                        
+                        <!-- Checkout Button -->
+                        <a href="checkout.html" id="checkout-button" class="checkout-button w-full py-3 text-center font-bold block">FINALIZAR PEDIDO</a>
+                    </div>
+                </div>
+            </div>
+        </main>
+        
+        <!-- Footer -->
+        <footer class="py-4 text-center text-gray-500 text-xs">
+            <p>© Space Roleplay. Todos os direitos reservados.</p>
+            <p>O Space Roleplay não é afiliado de forma alguma à Rockstar Games Inc.</p>
+        </footer>
+    </div>
+    
+    <!-- Toast Notification -->
+    <div id="toast" class="toast">
+        <div class="flex items-center">
+            <svg id="toast-icon" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="mr-2">
+                <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
+                <polyline points="22 4 12 14.01 9 11.01"></polyline>
+            </svg>
+            <span id="toast-message">Mensagem de notificação</span>
+        </div>
+    </div>
+    
+    <script>
+        // Available coupons - you can add, remove or modify these
+        const availableCoupons = [
+            { code: "BMI10", discount: 0.10, description: "10% de desconto" },
+            { code: "BMI20", discount: 0.20, description: "20% de desconto" },
+            { code: "BEMVINDO", discount: 0.15, description: "15% de desconto" },
+            { code: "SERVIDOR", discount: 0.25, description: "25% de desconto" },
+            { code: "VIP2024", discount: 0.30, description: "30% de desconto" },
+            { code: "IMPERIAL", discount: 0.50, description: "50% de desconto" }
+        ];
+        
+        // Cart state
+        let cartState = {
+            items: [],
+            subtotal: 0,
+            appliedCoupon: null,
+            discount: 0,
+            total: 0
+        };
+        
+        // Load cart items from localStorage
+        document.addEventListener('DOMContentLoaded', function() {
+            loadCartState();
+            loadCartItems();
+            updateCartCount();
+            
+            // Add event listener for apply coupon button
+            document.getElementById('apply-coupon').addEventListener('click', applyCoupon);
+            
+            // Add event listener for coupon input (press Enter)
+            document.getElementById('coupon-input').addEventListener('keypress', function(e) {
+                if (e.key === 'Enter') {
+                    applyCoupon();
+                }
+            });
+            
+            // Check if cart is empty and disable checkout button if it is
+            if (cartState.items.length === 0) {
+                document.getElementById('checkout-button').classList.add('opacity-50', 'cursor-not-allowed');
+                document.getElementById('checkout-button').href = '#';
+                document.getElementById('checkout-button').addEventListener('click', function(e) {
+                    e.preventDefault();
+                    showToast("Seu carrinho está vazio", "error");
+                });
+            }
+        });
+        
+        // Load cart state from localStorage
+        function loadCartState() {
+            const savedState = localStorage.getItem('cartState');
+            if (savedState) {
+                cartState = JSON.parse(savedState);
+            } else {
+                // Initialize with items from localStorage for backward compatibility
+                const cartItems = JSON.parse(localStorage.getItem('cartItems')) || [];
+                cartState.items = cartItems;
+                calculateCartTotals();
+                saveCartState();
+            }
+        }
+        
+        // Save cart state to localStorage
+        function saveCartState() {
+            localStorage.setItem('cartState', JSON.stringify(cartState));
+            // For backward compatibility
+            localStorage.setItem('cartItems', JSON.stringify(cartState.items));
+        }
+        
+        // Calculate cart totals (subtotal, discount, total)
+        function calculateCartTotals() {
+            // Calculate subtotal
+            cartState.subtotal = cartState.items.reduce((sum, item) => sum + parseFloat(item.price), 0);
+            
+            // Calculate discount amount
+            if (cartState.appliedCoupon) {
+                cartState.discount = cartState.subtotal * cartState.appliedCoupon.discount;
+            } else {
+                cartState.discount = 0;
+            }
+            
+            // Calculate total
+            cartState.total = cartState.subtotal - cartState.discount;
+        }
+        
+        // Apply coupon function
+        function applyCoupon() {
+            const couponInput = document.getElementById('coupon-input');
+            const couponCode = couponInput.value.trim().toUpperCase();
+            
+            if (!couponCode) {
+                showToast("Por favor, insira um código de cupom", "error");
+                return;
+            }
+            
+            // Check if coupon exists
+            const coupon = availableCoupons.find(c => c.code === couponCode);
+            
+            if (!coupon) {
+                showToast("Cupom inválido ou expirado", "error");
+                return;
+            }
+            
+            // Apply coupon
+            cartState.appliedCoupon = coupon;
+            calculateCartTotals();
+            saveCartState();
+            
+            // Update UI
+            updateOrderSummary();
+            
+            // Show success message
+            showToast(`Cupom "${couponCode}" aplicado com sucesso!`, "success");
+            
+            // Clear input
+            couponInput.value = "";
+        }
+        
+        // Remove coupon function
+        function removeCoupon() {
+            cartState.appliedCoupon = null;
+            calculateCartTotals();
+            saveCartState();
+            updateOrderSummary();
+            showToast("Cupom removido", "success");
+        }
+        
+        // Update order summary UI
+        function updateOrderSummary() {
+            const discountAppliedElement = document.getElementById('discount-applied');
+            const totalPriceElement = document.getElementById('total-price');
+            
+            if (cartState.appliedCoupon) {
+                const discountPercent = cartState.appliedCoupon.discount * 100;
+                const discountAmount = cartState.discount.toFixed(2).replace('.', ',');
+                
+                discountAppliedElement.innerHTML = `
+                    <span class="text-[#00c2ff]">${discountPercent}%</span> 
+                    (R$ ${discountAmount})
+                    <button id="remove-coupon" class="ml-2 text-red-400 hover:text-red-300">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <line x1="18" y1="6" x2="6" y2="18"></line>
+                            <line x1="6" y1="6" x2="18" y2="18"></line>
+                        </svg>
+                    </button>
+                `;
+                
+                // Add event listener to remove coupon button
+                document.getElementById('remove-coupon').addEventListener('click', removeCoupon);
+            } else {
+                discountAppliedElement.textContent = "Nenhum";
+            }
+            
+            // Update total price
+            totalPriceElement.textContent = `R$ ${cartState.total.toFixed(2).replace('.', ',')}`;
+        }
+        
+        // Show toast notification
+        function showToast(message, type = "success") {
+            const toast = document.getElementById('toast');
+            const toastMessage = document.getElementById('toast-message');
+            const toastIcon = document.getElementById('toast-icon');
+            
+            // Set message
+            toastMessage.textContent = message;
+            
+            // Set toast type (success or error)
+            toast.className = `toast ${type}`;
+            
+            // Set icon based on type
+            if (type === "success") {
+                toastIcon.innerHTML = `
+                    <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
+                    <polyline points="22 4 12 14.01 9 11.01"></polyline>
+                `;
+            } else {
+                toastIcon.innerHTML = `
+                    <circle cx="12" cy="12" r="10"></circle>
+                    <line x1="12" y1="8" x2="12" y2="12"></line>
+                    <line x1="12" y1="16" x2="12.01" y2="16"></line>
+                `;
+            }
+            
+            // Show toast
+            toast.classList.add('show');
+            
+            // Hide toast after 3 seconds
+            setTimeout(() => {
+                toast.classList.remove('show');
+            }, 3000);
+        }
+        
+        // Load cart items into UI
+        function loadCartItems() {
+            const cartItemsContainer = document.getElementById('cart-items-container');
+            const emptyCartMessage = document.getElementById('empty-cart-message');
+            
+            // Update cart count
+            document.getElementById('cart-count').textContent = cartState.items.length;
+            
+            // Show/hide empty cart message
+            if (cartState.items.length === 0) {
+                cartItemsContainer.innerHTML = '';
+                emptyCartMessage.classList.remove('hidden');
+                return;
+            }
+            
+            emptyCartMessage.classList.add('hidden');
+            
+            // Clear container
+            cartItemsContainer.innerHTML = '';
+            
+            // Add items to container
+            cartState.items.forEach((item, index) => {
+                const itemElement = document.createElement('div');
+                itemElement.className = 'cart-item p-4 mb-4 flex items-center';
+                itemElement.innerHTML = `
+                    <img src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/image-xFj9uKuVfi8V61ImvT2heUhJL6KZsZ.png" alt="VIP" class="w-16 h-16 mr-4">
+                    <div class="flex-grow">
+                        <h3 class="font-semibold">${item.name}</h3>
+                    </div>
+                    <div class="text-[#00c2ff] font-bold mr-4">R$ ${parseFloat(item.price).toFixed(2).replace('.', ',')}</div>
+                    <button class="delete-button" onclick="removeFromCart(${index})">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <polyline points="3 6 5 6 21 6"></polyline>
+                            <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path>
+                        </svg>
+                    </button>
+                `;
+                
+                cartItemsContainer.appendChild(itemElement);
+            });
+            
+            // Update order summary
+            updateOrderSummary();
+        }
+        
+        // Remove item from cart
+        function removeFromCart(index) {
+            // Remove item at index
+            cartState.items.splice(index, 1);
+            
+            // Recalculate totals
+            calculateCartTotals();
+            
+            // Save updated cart state
+            saveCartState();
+            
+            // Reload cart items
+            loadCartItems();
+            updateCartCount();
+            
+            // Show notification
+            showToast("Item removido do carrinho", "success");
+            
+            // Check if cart is empty and disable checkout button if it is
+            if (cartState.items.length === 0) {
+                document.getElementById('checkout-button').classList.add('opacity-50', 'cursor-not-allowed');
+                document.getElementById('checkout-button').href = '#';
+                document.getElementById('checkout-button').addEventListener('click', function(e) {
+                    e.preventDefault();
+                    showToast("Seu carrinho está vazio", "error");
+                });
+            }
+        }
+        
+        // Update cart count
+        function updateCartCount() {
+            // Update cart count
+            document.getElementById('cart-count').textContent = cartState.items.length;
+        }
+        
+        // Function to create a new coupon (for admin use)
+        function createCoupon(code, discountPercent, description) {
+            // Convert percent to decimal (e.g., 10% -> 0.10)
+            const discount = discountPercent / 100;
+            
+            // Create new coupon object
+            const newCoupon = {
+                code: code.toUpperCase(),
+                discount: discount,
+                description: description || `${discountPercent}% de desconto`
+            };
+            
+            // Add to available coupons
+            availableCoupons.push(newCoupon);
+            
+            console.log(`Novo cupom criado: ${code} (${discountPercent}% de desconto)`);
+            return newCoupon;
+        }
+        
+        // Function to list all available coupons (for admin use)
+        function listAllCoupons() {
+            console.log("Cupons disponíveis:");
+            availableCoupons.forEach(coupon => {
+                console.log(`- ${coupon.code}: ${coupon.discount * 100}% de desconto (${coupon.description})`);
+            });
+        }
+        
+        // Function to delete a coupon (for admin use)
+        function deleteCoupon(code) {
+            const codeUpper = code.toUpperCase();
+            const initialLength = availableCoupons.length;
+            
+            // Filter out the coupon with the specified code
+            const filteredCoupons = availableCoupons.filter(coupon => coupon.code !== codeUpper);
+            
+            // Check if a coupon was removed
+            if (filteredCoupons.length < initialLength) {
+                // Update the availableCoupons array
+                while (availableCoupons.length > 0) {
+                    availableCoupons.pop();
+                }
+                filteredCoupons.forEach(coupon => availableCoupons.push(coupon));
+                
+                console.log(`Cupom ${code} removido com sucesso.`);
+                return true;
+            } else {
+                console.log(`Cupom ${code} não encontrado.`);
+                return false;
+            }
+        }
+    </script>
+</body>
+</html>

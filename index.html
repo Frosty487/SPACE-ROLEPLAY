@@ -1,0 +1,170 @@
+
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Brasil Mundo Imperial</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: #0a0a0a;
+            color: white;
+        }
+        .notification-badge {
+            position: absolute;
+            top: -5px;
+            right: -5px;
+            background-color: #00c2ff;
+            color: black;
+            border-radius: 50%;
+            width: 18px;
+            height: 18px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 12px;
+            font-weight: bold;
+        }
+        .cyan-text {
+            color: #00c2ff;
+        }
+        .cyan-button {
+            border: 2px solid #00c2ff;
+            color: #00c2ff;
+            transition: all 0.3s ease;
+            border-radius: 0.375rem;
+        }
+        .cyan-button:hover {
+            background-color: rgba(0, 194, 255, 0.1);
+        }
+        .login-button {
+            background-color: transparent;
+            border: 2px solid #00c2ff;
+            color: #00c2ff;
+            transition: all 0.3s ease;
+            border-radius: 9999px;
+        }
+        .login-button:hover {
+            background-color: #00c2ff;
+            color: black;
+        }
+        .nav-link {
+            font-size: 14px;
+            font-weight: 500;
+        }
+        .online-dot {
+            width: 10px;
+            height: 10px;
+            background-color: #00ff4c;
+            border-radius: 50%;
+            display: inline-block;
+            margin-right: 8px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container mx-auto px-4 min-h-screen flex flex-col">
+        <!-- Header -->
+        <header class="py-4 flex justify-between items-center">
+            <!-- Logo -->
+            <div class="flex-shrink-0">
+                <a href="index.html">
+                    <svg width="80" height="30" viewBox="0 0 80 30" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M20.5 7C20.5 7 15 7 15 12.5C15 18 20.5 18 20.5 18H25.5C25.5 18 31 18 31 12.5C31 7 25.5 7 25.5 7H20.5Z" fill="white"/>
+                        <path d="M20.5 10L20.5 15M25.5 10V15M20.5 12.5H25.5" stroke="#0a0a0a" stroke-width="1.5"/>
+                        <text x="35" y="15" fill="#00c2ff" font-family="Poppins" font-size="12" font-weight="bold">SPACE ROLEPLAY</text>
+                    </svg>
+                </a>
+            </div>
+            
+            <!-- Navigation -->
+            <nav class="hidden md:flex space-x-8">
+                <a href="index.html" class="nav-link text-cyan-400 hover:text-cyan-300">Página inicial</a>
+                <a href="loja.html" class="nav-link text-white hover:text-gray-300">Loja virtual</a>
+                <a href="#" class="nav-link text-white hover:text-gray-300">Termos e Regras</a>
+                <a href="#" class="nav-link text-white hover:text-gray-300">Entrar no Discord</a>
+            </nav>
+            
+            <!-- Right side buttons -->
+            <div class="flex items-center space-x-4">
+                <div class="relative">
+                    <a href="carrinho.html">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#00c2ff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <circle cx="9" cy="21" r="1"></circle>
+                            <circle cx="20" cy="21" r="1"></circle>
+                            <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path>
+                        </svg>
+                        <span id="cart-count" class="notification-badge">0</span>
+                    </a>
+                </div>
+                <button class="login-button px-6 py-2 rounded-full text-sm font-bold">FAZER LOGIN</button>
+            </div>
+        </header>
+        
+        <!-- Main Content -->
+        <main class="flex-grow flex items-center">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                <!-- Left Column - Text Content -->
+                <div class="flex flex-col justify-center">
+                    <div class="mb-2 flex items-center">
+                        <span class="online-dot"></span>
+                        <span class="text-sm font-medium uppercase">ONLINE</span>
+                    </div>
+                    
+                    <h1 class="text-4xl md:text-5xl font-bold mb-4">
+                        <span class="text-white">Space </span>
+                        <span class="cyan-text">Roleplay</span>
+                    </h1>
+                    
+                    <p class="text-gray-400 mb-8 max-w-lg text-sm">
+                        Junte-se aos outros jogadores para desfrutar de toda a diversão em nosso servidor! Estamos ansiosamente aguardando a sua chegada para compartilhar essa experiência com você.
+                    </p>
+                    
+                    <div class="flex flex-wrap gap-4">
+                        <button class="cyan-button px-8 py-3 uppercase font-bold text-sm">CONECTAR-SE</button>
+                        <a href="loja.html" class="cyan-button px-8 py-3 uppercase font-bold text-sm">VISITAR LOJA</a>
+                    </div>
+                    
+                    <div class="mt-6 flex items-center">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#00c2ff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
+                            <circle cx="9" cy="7" r="4"></circle>
+                            <path d="M23 21v-2a4 4 0 0 0-3-3.87"></path>
+                            <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
+                        </svg>
+                        <span class="ml-2 text-gray-400 text-sm">0 jogadores online.</span>
+                    </div>
+                </div>
+                
+                <!-- Right Column - Character Image -->
+                <div class="hidden md:block">
+                    <img src="imgs/ilu2.png" alt="Personagem do jogo" class="w-full h-auto object-contain">
+                </div>
+            </div>
+        </main>
+        
+        <!-- Footer -->
+        <footer class="py-4 text-center text-gray-500 text-xs">
+            <p>© 2025 Space Roleplay. Todos os direitos reservados.</p>
+            <p>O Space Roleplay não é afiliado de forma alguma à Rockstar Games Inc.</p>
+        </footer>
+    </div>
+    
+    <script>
+        // Update cart count on page load
+        document.addEventListener('DOMContentLoaded', function() {
+            updateCartCount();
+        });
+        
+        // Update cart count function
+        function updateCartCount() {
+            const cartCount = document.getElementById('cart-count');
+            const cartItems = JSON.parse(localStorage.getItem('cartItems')) || [];
+            cartCount.textContent = cartItems.length;
+        }
+    </script>
+</body>
+</html>

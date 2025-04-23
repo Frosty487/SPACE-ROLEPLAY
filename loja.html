@@ -1,0 +1,1230 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Loja Virtual - Brasil Mundo Imperial</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: #0a0a0a;
+            color: white;
+        }
+        .notification-badge {
+            position: absolute;
+            top: -5px;
+            right: -5px;
+            background-color: #00c2ff;
+            color: black;
+            border-radius: 50%;
+            width: 18px;
+            height: 18px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 12px;
+            font-weight: bold;
+        }
+        .cyan-text {
+            color: #00c2ff;
+        }
+        .cyan-button {
+            border: 2px solid #00c2ff;
+            color: #00c2ff;
+            transition: all 0.3s ease;
+            border-radius: 0.375rem;
+        }
+        .cyan-button:hover {
+            background-color: rgba(0, 194, 255, 0.1);
+        }
+        .login-button {
+            background-color: transparent;
+            border: 2px solid #00c2ff;
+            color: #00c2ff;
+            transition: all 0.3s ease;
+            border-radius: 9999px;
+        }
+        .login-button:hover {
+            background-color: #00c2ff;
+            color: black;
+        }
+        .nav-link {
+            font-size: 14px;
+            font-weight: 500;
+        }
+        .category-button {
+            width: 100%;
+            background-color: transparent;
+            border: 2px solid #00c2ff;
+            color: #00c2ff;
+            border-radius: 9999px;
+            padding: 0.5rem 1rem;
+            margin-bottom: 0.5rem;
+            font-weight: 500;
+            transition: all 0.3s ease;
+        }
+        .category-button:hover, .category-button.active {
+            background-color: #00c2ff;
+            color: black;
+        }
+        .product-card {
+            background-color: #111111;
+            border-radius: 0.5rem;
+            overflow: hidden;
+            transition: all 0.3s ease;
+        }
+        .product-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 15px -3px rgba(0, 194, 255, 0.1);
+        }
+        .info-button {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            border: 2px solid #00c2ff;
+            color: #00c2ff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+        }
+        .info-button:hover {
+            background-color: #00c2ff;
+            color: black;
+        }
+        .buy-button {
+            background-color: transparent;
+            border: 2px solid #00c2ff;
+            color: #00c2ff;
+            border-radius: 0.375rem;
+            padding: 0.5rem 1rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            font-size: 0.75rem;
+            transition: all 0.3s ease;
+        }
+        .buy-button:hover {
+            background-color: rgba(0, 194, 255, 0.1);
+        }
+        .toast {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background-color: #00c2ff;
+            color: black;
+            padding: 1rem;
+            border-radius: 0.5rem;
+            z-index: 50;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+            transform: translateX(150%);
+            transition: transform 0.3s ease;
+        }
+        .toast.show {
+            transform: translateX(0);
+        }
+        .modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.8);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 100;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.3s ease;
+        }
+        .modal.show {
+            opacity: 1;
+            pointer-events: auto;
+        }
+        .modal-content {
+            background-color: #111111;
+            border: 2px solid #00c2ff;
+            border-radius: 0.5rem;
+            padding: 0;
+            max-width: 700px;
+            width: 90%;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+        }
+        .modal-header {
+            background-color: #0a0a0a;
+            padding: 1.5rem;
+            position: relative;
+            border-bottom: 1px solid #222;
+        }
+        .modal-body {
+            padding: 1.5rem;
+            max-height: 70vh;
+            overflow-y: auto;
+        }
+        .modal-footer {
+            padding: 1.5rem;
+            background-color: #0a0a0a;
+            border-top: 1px solid #222;
+        }
+        .close-button {
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            background: none;
+            border: none;
+            color: white;
+            font-size: 1.5rem;
+            cursor: pointer;
+        }
+        .feature-item {
+            display: flex;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
+        .feature-icon {
+            width: 24px;
+            height: 24px;
+            margin-right: 1rem;
+            color: #00c2ff;
+        }
+        .badge {
+            background-color: #00c2ff;
+            color: black;
+            padding: 0.25rem 0.75rem;
+            border-radius: 9999px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            margin-right: 0.5rem;
+            margin-bottom: 0.5rem;
+            display: inline-block;
+        }
+        .product-category {
+            display: none;
+        }
+        .product-category.active {
+            display: grid;
+            grid-template-columns: repeat(1, minmax(0, 1fr));
+        }
+        @media (min-width: 768px) {
+            .product-category.active {
+                grid-template-columns: repeat(3, minmax(0, 1fr));
+            }
+        }
+        .product-category.active {
+            gap: 1.5rem;
+        }
+    </style>
+</head>
+<body>
+    <div class="container mx-auto px-4">
+        <!-- Header -->
+        <header class="py-4 flex justify-between items-center">
+            <!-- Logo -->
+            <div class="flex-shrink-0">
+                <a href="index.html">
+                    <svg width="80" height="30" viewBox="0 0 80 30" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M20.5 7C20.5 7 15 7 15 12.5C15 18 20.5 18 20.5 18H25.5C25.5 18 31 18 31 12.5C31 7 25.5 7 25.5 7H20.5Z" fill="white"/>
+                        <path d="M20.5 10L20.5 15M25.5 10V15M20.5 12.5H25.5" stroke="#0a0a0a" stroke-width="1.5"/>
+                        <text x="35" y="15" fill="#00c2ff" font-family="Poppins" font-size="12" font-weight="bold">bmi</text>
+                    </svg>
+                </a>
+            </div>
+            
+            <!-- Navigation -->
+            <nav class="hidden md:flex space-x-8">
+                <a href="index.html" class="nav-link text-white hover:text-gray-300">Página inicial</a>
+                <a href="loja.html" class="nav-link text-cyan-400 hover:text-cyan-300">Loja virtual</a>
+                <a href="#" class="nav-link text-white hover:text-gray-300">Termos e Regras</a>
+                <a href="#" class="nav-link text-white hover:text-gray-300">Entrar no Discord</a>
+            </nav>
+            
+            <!-- Right side buttons -->
+            <div class="flex items-center space-x-4">
+                <div class="relative">
+                    <a href="carrinho.html" id="cart-button">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#00c2ff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <circle cx="9" cy="21" r="1"></circle>
+                            <circle cx="20" cy="21" r="1"></circle>
+                            <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path>
+                        </svg>
+                        <span id="cart-count" class="notification-badge">0</span>
+                    </a>
+                </div>
+                <button class="login-button px-6 py-2 rounded-full text-sm font-bold">FAZER LOGIN</button>
+            </div>
+        </header>
+        
+        <!-- Main Content -->
+        <main class="py-8">
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-6">
+                <!-- Left Sidebar - Categories -->
+                <div class="md:col-span-1">
+                    <div class="bg-[#111111] rounded-lg p-4">
+                        <h2 class="text-lg font-semibold mb-4 text-center">Selecione uma categoria</h2>
+                        <button class="category-button active" data-category="vips">Vips</button>
+                        <button class="category-button" data-category="cash">Cash</button>
+                        <button class="category-button" data-category="level">Level</button>
+                        <button class="category-button" data-category="corporacao">Corporação</button>
+                        <button class="category-button" data-category="faccao">Facção</button>
+                        <button class="category-button" data-category="unban">Unban</button>
+                        <button class="category-button" data-category="dinheiro">Dinheiro</button>
+                        <button class="category-button" data-category="privadas">Privadas</button>
+                        <button class="category-button" data-category="permanente">Permanente</button>
+                    </div>
+                </div>
+                
+                <!-- Right Content - Products -->
+                <div class="md:col-span-3">
+                    <!-- Info Banner -->
+                    <div class="bg-[#111111] rounded-lg p-4 mb-6 flex items-center">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#00c2ff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="mr-2">
+                            <circle cx="12" cy="12" r="10"></circle>
+                            <line x1="12" y1="16" x2="12" y2="12"></line>
+                            <line x1="12" y1="8" x2="12.01" y2="8"></line>
+                        </svg>
+                        <p class="text-sm">Para visualizar as vantagens do produto da categoria selecionada, clique no botão com este ícone:</p>
+                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#00c2ff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="ml-2">
+                            <circle cx="12" cy="12" r="10"></circle>
+                            <line x1="12" y1="16" x2="12" y2="12"></line>
+                            <line x1="12" y1="8" x2="12.01" y2="8"></line>
+                        </svg>
+                    </div>
+                    
+                    <!-- Products Grid - VIPs Category -->
+                    <div id="vips-category" class="product-category active">
+                        <!-- Product 1 -->
+                        <div class="product-card" 
+                             data-product="VIP Alpha" 
+                             data-price="20.00" 
+                             data-description="O VIP Alpha oferece acesso a áreas exclusivas, 10% de desconto na loja, tag especial no chat e 50.000 de dinheiro inicial no jogo."
+                             data-features='["Acesso a áreas VIP exclusivas", "10% de desconto na loja", "Tag [VIP] no chat", "50.000 de dinheiro inicial no jogo", "Acesso ao canal VIP no Discord"]'
+                             data-duration="30 dias"
+                             data-badges='["Exclusivo", "Mais vendido"]'>
+                            <div class="p-4 text-center">
+                                <div class="text-center mb-2">
+                                    <img src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/image-xFj9uKuVfi8V61ImvT2heUhJL6KZsZ.png" alt="VIP" class="w-24 h-24 mx-auto">
+                                </div>
+                                <h3 class="text-lg font-semibold mb-1">VIP Alpha</h3>
+                                <p class="text-[#00c2ff] text-xl font-bold mb-4">R$ 20,00</p>
+                                <div class="flex justify-between items-center">
+                                    <button class="buy-button flex-grow mr-2" onclick="addToCart('VIP Alpha', 20.00)">COMPRAR AGORA</button>
+                                    <button class="info-button" onclick="showProductInfo('VIP Alpha')">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                            <circle cx="12" cy="12" r="10"></circle>
+                                            <line x1="12" y1="16" x2="12" y2="12"></line>
+                                            <line x1="12" y1="8" x2="12.01" y2="8"></line>
+                                        </svg>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Product 2 -->
+                        <div class="product-card" 
+                             data-product="VIP Epsylon" 
+                             data-price="24.00" 
+                             data-description="O VIP Epsylon oferece acesso a áreas exclusivas, 15% de desconto na loja, tag especial no chat, 75.000 de dinheiro inicial e acesso a veículos exclusivos."
+                             data-features='["Acesso a todas áreas VIP exclusivas", "15% de desconto na loja", "Tag [VIP+] no chat", "75.000 de dinheiro inicial no jogo", "Acesso ao canal VIP no Discord", "Kit de armas básico", "Acesso a veículos exclusivos"]'
+                             data-duration="30 dias"
+                             data-badges='["Popular", "Recomendado"]'>
+                            <div class="p-4 text-center">
+                                <div class="text-center mb-2">
+                                    <img src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/image-xFj9uKuVfi8V61ImvT2heUhJL6KZsZ.png" alt="VIP" class="w-24 h-24 mx-auto">
+                                </div>
+                                <h3 class="text-lg font-semibold mb-1">VIP Epsylon</h3>
+                                <p class="text-[#00c2ff] text-xl font-bold mb-4">R$ 24,00</p>
+                                <div class="flex justify-between items-center">
+                                    <button class="buy-button flex-grow mr-2" onclick="addToCart('VIP Epsylon', 24.00)">COMPRAR AGORA</button>
+                                    <button class="info-button" onclick="showProductInfo('VIP Epsylon')">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                            <circle cx="12" cy="12" r="10"></circle>
+                                            <line x1="12" y1="16" x2="12" y2="12"></line>
+                                            <line x1="12" y1="8" x2="12.01" y2="8"></line>
+                                        </svg>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Product 3 -->
+                        <div class="product-card" 
+                             data-product="VIP Sigma" 
+                             data-price="29.00" 
+                             data-description="O VIP Sigma oferece acesso a todas as áreas exclusivas, 20% de desconto na loja, tag especial no chat, 100.000 de dinheiro inicial, acesso a veículos exclusivos e comandos especiais."
+                             data-features='["Acesso a todas áreas VIP exclusivas", "20% de desconto na loja", "Tag [VIP++] no chat", "100.000 de dinheiro inicial no jogo", "Acesso ao canal VIP no Discord", "Kit de armas completo", "Acesso a todos veículos exclusivos", "Comandos especiais", "Prioridade na fila"]'
+                             data-duration="30 dias"
+                             data-badges='["Premium", "Melhor custo-benefício"]'>
+                            <div class="p-4 text-center">
+                                <div class="text-center mb-2">
+                                    <img src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/image-xFj9uKuVfi8V61ImvT2heUhJL6KZsZ.png" alt="VIP" class="w-24 h-24 mx-auto">
+                                </div>
+                                <h3 class="text-lg font-semibold mb-1">VIP Sigma</h3>
+                                <p class="text-[#00c2ff] text-xl font-bold mb-4">R$ 29,00</p>
+                                <div class="flex justify-between items-center">
+                                    <button class="buy-button flex-grow mr-2" onclick="addToCart('VIP Sigma', 29.00)">COMPRAR AGORA</button>
+                                    <button class="info-button" onclick="showProductInfo('VIP Sigma')">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                            <circle cx="12" cy="12" r="10"></circle>
+                                            <line x1="12" y1="16" x2="12" y2="12"></line>
+                                            <line x1="12" y1="8" x2="12.01" y2="8"></line>
+                                        </svg>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Product 4 -->
+                        <div class="product-card" 
+                             data-product="VIP Omega" 
+                             data-price="34.00" 
+                             data-description="O VIP Omega oferece acesso a todas as áreas exclusivas, 25% de desconto na loja, tag especial no chat, 150.000 de dinheiro inicial, acesso a veículos exclusivos, comandos especiais e prioridade na fila."
+                             data-features='["Acesso a todas áreas VIP exclusivas", "25% de desconto na loja", "Tag [VIP+++] no chat", "150.000 de dinheiro inicial no jogo", "Acesso ao canal VIP no Discord", "Kit de armas completo", "Acesso a todos veículos exclusivos", "Comandos especiais avançados", "Prioridade máxima na fila", "Slot reservado no servidor"]'
+                             data-duration="30 dias"
+                             data-badges='["Elite", "Completo"]'>
+                            <div class="p-4 text-center">
+                                <div class="text-center mb-2">
+                                    <img src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/image-xFj9uKuVfi8V61ImvT2heUhJL6KZsZ.png" alt="VIP" class="w-24 h-24 mx-auto">
+                                </div>
+                                <h3 class="text-lg font-semibold mb-1">VIP Omega</h3>
+                                <p class="text-[#00c2ff] text-xl font-bold mb-4">R$ 34,00</p>
+                                <div class="flex justify-between items-center">
+                                    <button class="buy-button flex-grow mr-2" onclick="addToCart('VIP Omega', 34.00)">COMPRAR AGORA</button>
+                                    <button class="info-button" onclick="showProductInfo('VIP Omega')">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                            <circle cx="12" cy="12" r="10"></circle>
+                                            <line x1="12" y1="16" x2="12" y2="12"></line>
+                                            <line x1="12" y1="8" x2="12.01" y2="8"></line>
+                                        </svg>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Product 5 -->
+                        <div class="product-card" 
+                             data-product="VIP Imperium" 
+                             data-price="53.00" 
+                             data-description="O VIP Imperium oferece acesso a todas as áreas exclusivas, 30% de desconto na loja, tag especial no chat, 250.000 de dinheiro inicial, acesso a veículos exclusivos, comandos especiais, prioridade na fila e kit de armas exclusivo."
+                             data-features='["Acesso a todas áreas VIP exclusivas", "30% de desconto na loja", "Tag [IMPERIUM] no chat", "250.000 de dinheiro inicial no jogo", "Acesso ao canal VIP no Discord", "Kit de armas exclusivo", "Acesso a todos veículos exclusivos", "Todos os comandos especiais", "Prioridade máxima na fila", "Slot reservado no servidor", "Acesso antecipado a atualizações", "Suporte prioritário"]'
+                             data-duration="30 dias"
+                             data-badges='["Premium", "Exclusivo"]'>
+                            <div class="p-4 text-center">
+                                <div class="text-center mb-2">
+                                    <img src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/image-xFj9uKuVfi8V61ImvT2heUhJL6KZsZ.png" alt="VIP" class="w-24 h-24 mx-auto">
+                                </div>
+                                <h3 class="text-lg font-semibold mb-1">VIP Imperium</h3>
+                                <p class="text-[#00c2ff] text-xl font-bold mb-4">R$ 53,00</p>
+                                <div class="flex justify-between items-center">
+                                    <button class="buy-button flex-grow mr-2" onclick="addToCart('VIP Imperium', 53.00)">COMPRAR AGORA</button>
+                                    <button class="info-button" onclick="showProductInfo('VIP Imperium')">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                            <circle cx="12" cy="12" r="10"></circle>
+                                            <line x1="12" y1="16" x2="12" y2="12"></line>
+                                            <line x1="12" y1="8" x2="12.01" y2="8"></line>
+                                        </svg>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Product 6 -->
+                        <div class="product-card" 
+                             data-product="VIP Patrocinador" 
+                             data-price="73.00" 
+                             data-description="O VIP Patrocinador oferece acesso a todas as áreas exclusivas, 40% de desconto na loja, tag especial no chat, 500.000 de dinheiro inicial, acesso a veículos exclusivos, comandos especiais, prioridade na fila, kit de armas exclusivo e nome destacado no servidor."
+                             data-features='["Acesso a todas áreas VIP exclusivas", "40% de desconto na loja", "Tag [PATROCINADOR] no chat", "500.000 de dinheiro inicial no jogo", "Acesso ao canal VIP no Discord", "Kit de armas exclusivo", "Acesso a todos veículos exclusivos", "Todos os comandos especiais", "Prioridade máxima na fila", "Slot reservado no servidor", "Acesso antecipado a atualizações", "Suporte prioritário 24/7", "Nome destacado no servidor", "Participação em eventos exclusivos"]'
+                             data-duration="30 dias"
+                             data-badges='["VIP Supremo", "Patrocinador"]'>
+                            <div class="p-4 text-center">
+                                <div class="text-center mb-2">
+                                    <img src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/image-xFj9uKuVfi8V61ImvT2heUhJL6KZsZ.png" alt="VIP" class="w-24 h-24 mx-auto">
+                                </div>
+                                <h3 class="text-lg font-semibold mb-1">VIP Patrocinador</h3>
+                                <p class="text-[#00c2ff] text-xl font-bold mb-4">R$ 73,00</p>
+                                <div class="flex justify-between items-center">
+                                    <button class="buy-button flex-grow mr-2" onclick="addToCart('VIP Patrocinador', 73.00)">COMPRAR AGORA</button>
+                                    <button class="info-button" onclick="showProductInfo('VIP Patrocinador')">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                            <circle cx="12" cy="12" r="10"></circle>
+                                            <line x1="12" y1="16" x2="12" y2="12"></line>
+                                            <line x1="12" y1="8" x2="12.01" y2="8"></line>
+                                        </svg>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Products Grid - Cash Category -->
+                    <div id="cash-category" class="product-category">
+                        <!-- Cash Product 1 -->
+                        <div class="product-card" 
+                             data-product="500 Cash" 
+                             data-price="15.00" 
+                             data-description="500 Cash para usar na loja do servidor. Compre itens exclusivos, veículos, armas e muito mais."
+                             data-features='["500 Cash para gastar na loja do servidor", "Compre itens exclusivos", "Compre veículos especiais", "Compre armas e acessórios", "Sem prazo de validade"]'
+                             data-duration="Permanente"
+                             data-badges='["Básico", "Popular"]'>
+                            <div class="p-4 text-center">
+                                <div class="text-center mb-2">
+                                    <img src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/image-xFj9uKuVfi8V61ImvT2heUhJL6KZsZ.png" alt="Cash" class="w-24 h-24 mx-auto">
+                                </div>
+                                <h3 class="text-lg font-semibold mb-1">500 Cash</h3>
+                                <p class="text-[#00c2ff] text-xl font-bold mb-4">R$ 15,00</p>
+                                <div class="flex justify-between items-center">
+                                    <button class="buy-button flex-grow mr-2" onclick="addToCart('500 Cash', 15.00)">COMPRAR AGORA</button>
+                                    <button class="info-button" onclick="showProductInfo('500 Cash')">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                            <circle cx="12" cy="12" r="10"></circle>
+                                            <line x1="12" y1="16" x2="12" y2="12"></line>
+                                            <line x1="12" y1="8" x2="12.01" y2="8"></line>
+                                        </svg>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Cash Product 2 -->
+                        <div class="product-card" 
+                             data-product="1000 Cash" 
+                             data-price="25.00" 
+                             data-description="1000 Cash para usar na loja do servidor. Compre itens exclusivos, veículos, armas e muito mais."
+                             data-features='["1000 Cash para gastar na loja do servidor", "Compre itens exclusivos", "Compre veículos especiais", "Compre armas e acessórios", "Sem prazo de validade", "Bônus de 100 Cash"]'
+                             data-duration="Permanente"
+                             data-badges='["Intermediário", "Recomendado"]'>
+                            <div class="p-4 text-center">
+                                <div class="text-center mb-2">
+                                    <img src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/image-xFj9uKuVfi8V61ImvT2heUhJL6KZsZ.png" alt="Cash" class="w-24 h-24 mx-auto">
+                                </div>
+                                <h3 class="text-lg font-semibold mb-1">1000 Cash</h3>
+                                <p class="text-[#00c2ff] text-xl font-bold mb-4">R$ 25,00</p>
+                                <div class="flex justify-between items-center">
+                                    <button class="buy-button flex-grow mr-2" onclick="addToCart('1000 Cash', 25.00)">COMPRAR AGORA</button>
+                                    <button class="info-button" onclick="showProductInfo('1000 Cash')">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                            <circle cx="12" cy="12" r="10"></circle>
+                                            <line x1="12" y1="16" x2="12" y2="12"></line>
+                                            <line x1="12" y1="8" x2="12.01" y2="8"></line>
+                                        </svg>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Cash Product 3 -->
+                        <div class="product-card" 
+                             data-product="2500 Cash" 
+                             data-price="50.00" 
+                             data-description="2500 Cash para usar na loja do servidor. Compre itens exclusivos, veículos, armas e muito mais."
+                             data-features='["2500 Cash para gastar na loja do servidor", "Compre itens exclusivos", "Compre veículos especiais", "Compre armas e acessórios", "Sem prazo de validade", "Bônus de 300 Cash"]'
+                             data-duration="Permanente"
+                             data-badges='["Avançado", "Melhor custo-benefício"]'>
+                            <div class="p-4 text-center">
+                                <div class="text-center mb-2">
+                                    <img src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/image-xFj9uKuVfi8V61ImvT2heUhJL6KZsZ.png" alt="Cash" class="w-24 h-24 mx-auto">
+                                </div>
+                                <h3 class="text-lg font-semibold mb-1">2500 Cash</h3>
+                                <p class="text-[#00c2ff] text-xl font-bold mb-4">R$ 50,00</p>
+                                <div class="flex justify-between items-center">
+                                    <button class="buy-button flex-grow mr-2" onclick="addToCart('2500 Cash', 50.00)">COMPRAR AGORA</button>
+                                    <button class="info-button" onclick="showProductInfo('2500 Cash')">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                            <circle cx="12" cy="12" r="10"></circle>
+                                            <line x1="12" y1="16" x2="12" y2="12"></line>
+                                            <line x1="12" y1="8" x2="12.01" y2="8"></line>
+                                        </svg>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Products Grid - Level Category -->
+                    <div id="level-category" class="product-category">
+                        <!-- Level Product 1 -->
+                        <div class="product-card" 
+                             data-product="Level 10" 
+                             data-price="10.00" 
+                             data-description="Aumente seu nível para 10 instantaneamente. Desbloqueie novas habilidades e áreas do mapa."
+                             data-features='["Aumento instantâneo para o nível 10", "Desbloqueie novas habilidades", "Acesso a novas áreas do mapa", "Desbloqueie novos itens na loja"]'
+                             data-duration="Permanente"
+                             data-badges='["Iniciante", "Rápido"]'>
+                            <div class="p-4 text-center">
+                                <div class="text-center mb-2">
+                                    <img src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/image-xFj9uKuVfi8V61ImvT2heUhJL6KZsZ.png" alt="Level" class="w-24 h-24 mx-auto">
+                                </div>
+                                <h3 class="text-lg font-semibold mb-1">Level 10</h3>
+                                <p class="text-[#00c2ff] text-xl font-bold mb-4">R$ 10,00</p>
+                                <div class="flex justify-between items-center">
+                                    <button class="buy-button flex-grow mr-2" onclick="addToCart('Level 10', 10.00)">COMPRAR AGORA</button>
+                                    <button class="info-button" onclick="showProductInfo('Level 10')">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                            <circle cx="12" cy="12" r="10"></circle>
+                                            <line x1="12" y1="16" x2="12" y2="12"></line>
+                                            <line x1="12" y1="8" x2="12.01" y2="8"></line>
+                                        </svg>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Level Product 2 -->
+                        <div class="product-card" 
+                             data-product="Level 25" 
+                             data-price="20.00" 
+                             data-description="Aumente seu nível para 25 instantaneamente. Desbloqueie novas habilidades e áreas do mapa."
+                             data-features='["Aumento instantâneo para o nível 25", "Desbloqueie novas habilidades", "Acesso a novas áreas do mapa", "Desbloqueie novos itens na loja", "Acesso a missões especiais"]'
+                             data-duration="Permanente"
+                             data-badges='["Intermediário", "Popular"]'>
+                            <div class="p-4 text-center">
+                                <div class="text-center mb-2">
+                                    <img src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/image-xFj9uKuVfi8V61ImvT2heUhJL6KZsZ.png" alt="Level" class="w-24 h-24 mx-auto">
+                                </div>
+                                <h3 class="text-lg font-semibold mb-1">Level 25</h3>
+                                <p class="text-[#00c2ff] text-xl font-bold mb-4">R$ 20,00</p>
+                                <div class="flex justify-between items-center">
+                                    <button class="buy-button flex-grow mr-2" onclick="addToCart('Level 25', 20.00)">COMPRAR AGORA</button>
+                                    <button class="info-button" onclick="showProductInfo('Level 25')">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                            <circle cx="12" cy="12" r="10"></circle>
+                                            <line x1="12" y1="16" x2="12" y2="12"></line>
+                                            <line x1="12" y1="8" x2="12.01" y2="8"></line>
+                                        </svg>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Level Product 3 -->
+                        <div class="product-card" 
+                             data-product="Level 50" 
+                             data-price="35.00" 
+                             data-description="Aumente seu nível para 50 instantaneamente. Desbloqueie novas habilidades e áreas do mapa."
+                             data-features='["Aumento instantâneo para o nível 50", "Desbloqueie todas as habilidades", "Acesso a todas as áreas do mapa", "Desbloqueie todos os itens na loja", "Acesso a todas as missões", "Bônus de 50.000 de dinheiro"]'
+                             data-duration="Permanente"
+                             data-badges='["Avançado", "Melhor custo-benefício"]'>
+                            <div class="p-4 text-center">
+                                <div class="text-center mb-2">
+                                    <img src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/image-xFj9uKuVfi8V61ImvT2heUhJL6KZsZ.png" alt="Level" class="w-24 h-24 mx-auto">
+                                </div  alt="Level" class="w-24 h-24 mx-auto">
+                                </div>
+                                <h3 class="text-lg font-semibold mb-1">Level 50</h3>
+                                <p class="text-[#00c2ff] text-xl font-bold mb-4">R$ 35,00</p>
+                                <div class="flex justify-between items-center">
+                                    <button class="buy-button flex-grow mr-2" onclick="addToCart('Level 50', 35.00)">COMPRAR AGORA</button>
+                                    <button class="info-button" onclick="showProductInfo('Level 50')">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                            <circle cx="12" cy="12" r="10"></circle>
+                                            <line x1="12" y1="16" x2="12" y2="12"></line>
+                                            <line x1="12" y1="8" x2="12.01" y2="8"></line>
+                                        </svg>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Products Grid - Corporação Category -->
+                    <div id="corporacao-category" class="product-category">
+                        <!-- Corporação Product 1 -->
+                        <div class="product-card" 
+                             data-product="Corporação Básica" 
+                             data-price="40.00" 
+                             data-description="Crie sua própria corporação no servidor. Recrute membros, realize missões exclusivas e ganhe benefícios especiais."
+                             data-features='["Crie sua própria corporação", "Até 10 membros", "Missões exclusivas", "Tag personalizada", "Sede básica", "Sistema de ranking interno"]'
+                             data-duration="30 dias"
+                             data-badges='["Básico", "Iniciante"]'>
+                            <div class="p-4 text-center">
+                                <div class="text-center mb-2">
+                                    <img src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/image-xFj9uKuVfi8V61ImvT2heUhJL6KZsZ.png" alt="Corporação" class="w-24 h-24 mx-auto">
+                                </div>
+                                <h3 class="text-lg font-semibold mb-1">Corporação Básica</h3>
+                                <p class="text-[#00c2ff] text-xl font-bold mb-4">R$ 40,00</p>
+                                <div class="flex justify-between items-center">
+                                    <button class="buy-button flex-grow mr-2" onclick="addToCart('Corporação Básica', 40.00)">COMPRAR AGORA</button>
+                                    <button class="info-button" onclick="showProductInfo('Corporação Básica')">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                            <circle cx="12" cy="12" r="10"></circle>
+                                            <line x1="12" y1="16" x2="12" y2="12"></line>
+                                            <line x1="12" y1="8" x2="12.01" y2="8"></line>
+                                        </svg>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Corporação Product 2 -->
+                        <div class="product-card" 
+                             data-product="Corporação Premium" 
+                             data-price="75.00" 
+                             data-description="Crie sua própria corporação premium no servidor. Recrute mais membros, realize missões exclusivas e ganhe benefícios especiais."
+                             data-features='["Crie sua própria corporação premium", "Até 25 membros", "Missões exclusivas", "Tag personalizada", "Sede avançada", "Sistema de ranking interno", "Veículos exclusivos", "Bônus de 100.000 de dinheiro", "Canal exclusivo no Discord"]'
+                             data-duration="30 dias"
+                             data-badges='["Premium", "Recomendado"]'>
+                            <div class="p-4 text-center">
+                                <div class="text-center mb-2">
+                                    <img src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/image-xFj9uKuVfi8V61ImvT2heUhJL6KZsZ.png" alt="Corporação" class="w-24 h-24 mx-auto">
+                                </div>
+                                <h3 class="text-lg font-semibold mb-1">Corporação Premium</h3>
+                                <p class="text-[#00c2ff] text-xl font-bold mb-4">R$ 75,00</p>
+                                <div class="flex justify-between items-center">
+                                    <button class="buy-button flex-grow mr-2" onclick="addToCart('Corporação Premium', 75.00)">COMPRAR AGORA</button>
+                                    <button class="info-button" onclick="showProductInfo('Corporação Premium')">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                            <circle cx="12" cy="12" r="10"></circle>
+                                            <line x1="12" y1="16" x2="12" y2="12"></line>
+                                            <line x1="12" y1="8" x2="12.01" y2="8"></line>
+                                        </svg>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Products Grid - Facção Category -->
+                    <div id="faccao-category" class="product-category">
+                        <!-- Facção Product 1 -->
+                        <div class="product-card" 
+                             data-product="Facção Básica" 
+                             data-price="45.00" 
+                             data-description="Crie sua própria facção no servidor. Recrute membros, realize crimes, controle territórios e ganhe benefícios especiais."
+                             data-features='["Crie sua própria facção", "Até 10 membros", "Controle de território básico", "Tag personalizada", "Esconderijo básico", "Sistema de ranking interno"]'
+                             data-duration="30 dias"
+                             data-badges='["Básico", "Iniciante"]'>
+                            <div class="p-4 text-center">
+                                <div class="text-center mb-2">
+                                    <img src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/image-xFj9uKuVfi8V61ImvT2heUhJL6KZsZ.png" alt="Facção" class="w-24 h-24 mx-auto">
+                                </div>
+                                <h3 class="text-lg font-semibold mb-1">Facção Básica</h3>
+                                <p class="text-[#00c2ff] text-xl font-bold mb-4">R$ 45,00</p>
+                                <div class="flex justify-between items-center">
+                                    <button class="buy-button flex-grow mr-2" onclick="addToCart('Facção Básica', 45.00)">COMPRAR AGORA</button>
+                                    <button class="info-button" onclick="showProductInfo('Facção Básica')">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                            <circle cx="12" cy="12" r="10"></circle>
+                                            <line x1="12" y1="16" x2="12" y2="12"></line>
+                                            <line x1="12" y1="8" x2="12.01" y2="8"></line>
+                                        </svg>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Facção Product 2 -->
+                        <div class="product-card" 
+                             data-product="Facção Premium" 
+                             data-price="85.00" 
+                             data-description="Crie sua própria facção premium no servidor. Recrute mais membros, realize crimes, controle mais territórios e ganhe benefícios especiais."
+                             data-features='["Crie sua própria facção premium", "Até 25 membros", "Controle de território avançado", "Tag personalizada", "Esconderijo avançado", "Sistema de ranking interno", "Veículos exclusivos", "Bônus de 100.000 de dinheiro", "Canal exclusivo no Discord"]'
+                             data-duration="30 dias"
+                             data-badges='["Premium", "Recomendado"]'>
+                            <div class="p-4 text-center">
+                                <div class="text-center mb-2">
+                                    <img src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/image-xFj9uKuVfi8V61ImvT2heUhJL6KZsZ.png" alt="Facção" class="w-24 h-24 mx-auto">
+                                </div>
+                                <h3 class="text-lg font-semibold mb-1">Facção Premium</h3>
+                                <p class="text-[#00c2ff] text-xl font-bold mb-4">R$ 85,00</p>
+                                <div class="flex justify-between items-center">
+                                    <button class="buy-button flex-grow mr-2" onclick="addToCart('Facção Premium', 85.00)">COMPRAR AGORA</button>
+                                    <button class="info-button" onclick="showProductInfo('Facção Premium')">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                            <circle cx="12" cy="12" r="10"></circle>
+                                            <line x1="12" y1="16" x2="12" y2="12"></line>
+                                            <line x1="12" y1="8" x2="12.01" y2="8"></line>
+                                        </svg>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Products Grid - Unban Category -->
+                    <div id="unban-category" class="product-category">
+                        <!-- Unban Product -->
+                        <div class="product-card" 
+                             data-product="Unban" 
+                             data-price="30.00" 
+                             data-description="Remova seu banimento do servidor e volte a jogar imediatamente."
+                             data-features='["Remoção imediata do banimento", "Volta a jogar no servidor", "Análise do caso por administradores", "Orientações para evitar futuros banimentos"]'
+                             data-duration="Permanente"
+                             data-badges='["Essencial", "Rápido"]'>
+                            <div class="p-4 text-center">
+                                <div class="text-center mb-2">
+                                    <img src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/image-xFj9uKuVfi8V61ImvT2heUhJL6KZsZ.png" alt="Unban" class="w-24 h-24 mx-auto">
+                                </div>
+                                <h3 class="text-lg font-semibold mb-1">Unban</h3>
+                                <p class="text-[#00c2ff] text-xl font-bold mb-4">R$ 30,00</p>
+                                <div class="flex justify-between items-center">
+                                    <button class="buy-button flex-grow mr-2" onclick="addToCart('Unban', 30.00)">COMPRAR AGORA</button>
+                                    <button class="info-button" onclick="showProductInfo('Unban')">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                            <circle cx="12" cy="12" r="10"></circle>
+                                            <line x1="12" y1="16" x2="12" y2="12"></line>
+                                            <line x1="12" y1="8" x2="12.01" y2="8"></line>
+                                        </svg>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Products Grid - Dinheiro Category -->
+                    <div id="dinheiro-category" class="product-category">
+                        <!-- Dinheiro Product 1 -->
+                        <div class="product-card" 
+                             data-product="100.000 Dinheiro" 
+                             data-price="15.00" 
+                             data-description="Receba 100.000 de dinheiro no jogo instantaneamente."
+                             data-features='["100.000 de dinheiro no jogo", "Entrega instantânea", "Use para comprar veículos", "Use para comprar propriedades", "Use para comprar itens"]'
+                             data-duration="Permanente"
+                             data-badges='["Básico", "Rápido"]'>
+                            <div class="p-4 text-center">
+                                <div class="text-center mb-2">
+                                    <img src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/image-xFj9uKuVfi8V61ImvT2heUhJL6KZsZ.png" alt="Dinheiro" class="w-24 h-24 mx-auto">
+                                </div>
+                                <h3 class="text-lg font-semibold mb-1">100.000 Dinheiro</h3>
+                                <p class="text-[#00c2ff] text-xl font-bold mb-4">R$ 15,00</p>
+                                <div class="flex justify-between items-center">
+                                    <button class="buy-button flex-grow mr-2" onclick="addToCart('100.000 Dinheiro', 15.00)">COMPRAR AGORA</button>
+                                    <button class="info-button" onclick="showProductInfo('100.000 Dinheiro')">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                            <circle cx="12" cy="12" r="10"></circle>
+                                            <line x1="12" y1="16" x2="12" y2="12"></line>
+                                            <line x1="12" y1="8" x2="12.01" y2="8"></line>
+                                        </svg>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Dinheiro Product 2 -->
+                        <div class="product-card" 
+                             data-product="500.000 Dinheiro" 
+                             data-price="40.00" 
+                             data-description="Receba 500.000 de dinheiro no jogo instantaneamente."
+                             data-features='["500.000 de dinheiro no jogo", "Entrega instantânea", "Use para comprar veículos", "Use para comprar propriedades", "Use para comprar itens", "Bônus de 50.000"]'
+                             data-duration="Permanente"
+                             data-badges='["Intermediário", "Popular"]'>
+                            <div class="p-4 text-center">
+                                <div class="text-center mb-2">
+                                    <img src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/image-xFj9uKuVfi8V61ImvT2heUhJL6KZsZ.png" alt="Dinheiro" class="w-24 h-24 mx-auto">
+                                </div>
+                                <h3 class="text-lg font-semibold mb-1">500.000 Dinheiro</h3>
+                                <p class="text-[#00c2ff] text-xl font-bold mb-4">R$ 40,00</p>
+                                <div class="flex justify-between items-center">
+                                    <button class="buy-button flex-grow mr-2" onclick="addToCart('500.000 Dinheiro', 40.00)">COMPRAR AGORA</button>
+                                    <button class="info-button" onclick="showProductInfo('500.000 Dinheiro')">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                            <circle cx="12" cy="12" r="10"></circle>
+                                            <line x1="12" y1="16" x2="12" y2="12"></line>
+                                            <line x1="12" y1="8" x2="12.01" y2="8"></line>
+                                        </svg>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Dinheiro Product 3 -->
+                        <div class="product-card" 
+                             data-product="1.000.000 Dinheiro" 
+                             data-price="70.00" 
+                             data-description="Receba 1.000.000 de dinheiro no jogo instantaneamente."
+                             data-features='["1.000.000 de dinheiro no jogo", "Entrega instantânea", "Use para comprar veículos", "Use para comprar propriedades", "Use para comprar itens", "Bônus de 150.000"]'
+                             data-duration="Permanente"
+                             data-badges='["Avançado", "Melhor custo-benefício"]'>
+                            <div class="p-4 text-center">
+                                <div class="text-center mb-2">
+                                    <img src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/image-xFj9uKuVfi8V61ImvT2heUhJL6KZsZ.png" alt="Dinheiro" class="w-24 h-24 mx-auto">
+                                </div>
+                                <h3 class="text-lg font-semibold mb-1">1.000.000 Dinheiro</h3>
+                                <p class="text-[#00c2ff] text-xl font-bold mb-4">R$ 70,00</p>
+                                <div class="flex justify-between items-center">
+                                    <button class="buy-button flex-grow mr-2" onclick="addToCart('1.000.000 Dinheiro', 70.00)">COMPRAR AGORA</button>
+                                    <button class="info-button" onclick="showProductInfo('1.000.000 Dinheiro')">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                            <circle cx="12" cy="12" r="10"></circle>
+                                            <line x1="12" y1="16" x2="12" y2="12"></line>
+                                            <line x1="12" y1="8" x2="12.01" y2="8"></line>
+                                        </svg>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Products Grid - Privadas Category -->
+                    <div id="privadas-category" class="product-category">
+                        <!-- Privadas Product 1 -->
+                        <div class="product-card" 
+                             data-product="Ilha Privada Básica" 
+                             data-price="50.00" 
+                             data-description="Tenha sua própria ilha privada no servidor. Um local exclusivo para você e seus amigos."
+                             data-features='["Ilha privada exclusiva", "Acesso para até 5 amigos", "Casa básica", "Garagem para 3 veículos", "Heliporto", "Acesso por barco ou helicóptero"]'
+                             data-duration="30 dias"
+                             data-badges='["Básico", "Exclusivo"]'>
+                            <div class="p-4 text-center">
+                                <div class="text-center mb-2">
+                                    <img src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/image-xFj9uKuVfi8V61ImvT2heUhJL6KZsZ.png" alt="Ilha Privada" class="w-24 h-24 mx-auto">
+                                </div>
+                                <h3 class="text-lg font-semibold mb-1">Ilha Privada Básica</h3>
+                                <p class="text-[#00c2ff] text-xl font-bold mb-4">R$ 50,00</p>
+                                <div class="flex justify-between items-center">
+                                    <button class="buy-button flex-grow mr-2" onclick="addToCart('Ilha Privada Básica', 50.00)">COMPRAR AGORA</button>
+                                    <button class="info-button" onclick="showProductInfo('Ilha Privada Básica')">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                            <circle cx="12" cy="12" r="10"></circle>
+                                            <line x1="12" y1="16" x2="12" y2="12"></line>
+                                            <line x1="12" y1="8" x2="12.01" y2="8"></line>
+                                        </svg>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Privadas Product 2 -->
+                        <div class="product-card" 
+                             data-product="Ilha Privada Premium" 
+                             data-price="100.00" 
+                             data-description="Tenha sua própria ilha privada premium no servidor. Um local exclusivo e luxuoso para você e seus amigos."
+                             data-features='["Ilha privada exclusiva premium", "Acesso para até 15 amigos", "Mansão luxuosa", "Garagem para 10 veículos", "Heliporto duplo", "Acesso por barco, helicóptero ou avião", "Piscina e área de lazer", "Sistema de segurança", "Cofre privado", "Bônus de 200.000 de dinheiro"]'
+                             data-duration="30 dias"
+                             data-badges='["Premium", "Luxo", "Recomendado"]'>
+                            <div class="p-4 text-center">
+                                <div class="text-center mb-2">
+                                    <img src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/image-xFj9uKuVfi8V61ImvT2heUhJL6KZsZ.png" alt="Ilha Privada" class="w-24 h-24 mx-auto">
+                                </div>
+                                <h3 class="text-lg font-semibold mb-1">Ilha Privada Premium</h3>
+                                <p class="text-[#00c2ff] text-xl font-bold mb-4">R$ 100,00</p>
+                                <div class="flex justify-between items-center">
+                                    <button class="buy-button flex-grow mr-2" onclick="addToCart('Ilha Privada Premium', 100.00)">COMPRAR AGORA</button>
+                                    <button class="info-button" onclick="showProductInfo('Ilha Privada Premium')">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                            <circle cx="12" cy="12" r="10"></circle>
+                                            <line x1="12" y1="16" x2="12" y2="12"></line>
+                                            <line x1="12" y1="8" x2="12.01" y2="8"></line>
+                                        </svg>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Products Grid - Permanente Category -->
+                    <div id="permanente-category" class="product-category">
+                        <!-- Permanente Product 1 -->
+                        <div class="product-card" 
+                             data-product="VIP Permanente" 
+                             data-price="150.00" 
+                             data-description="Tenha acesso a todas as vantagens VIP permanentemente. Nunca mais precise renovar seu VIP."
+                             data-features='["Acesso permanente a todas as áreas VIP", "25% de desconto na loja", "Tag [VIP PERMANENTE] no chat", "150.000 de dinheiro inicial", "Acesso ao canal VIP no Discord", "Kit de armas completo", "Acesso a todos veículos exclusivos", "Comandos especiais", "Prioridade na fila", "Slot reservado no servidor"]'
+                             data-duration="Permanente"
+                             data-badges='["Permanente", "Exclusivo", "Melhor custo-benefício"]'>
+                            <div class="p-4 text-center">
+                                <div class="text-center mb-2">
+                                    <img src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/image-xFj9uKuVfi8V61ImvT2heUhJL6KZsZ.png" alt="VIP Permanente" class="w-24 h-24 mx-auto">
+                                </div>
+                                <h3 class="text-lg font-semibold mb-1">VIP Permanente</h3>
+                                <p class="text-[#00c2ff] text-xl font-bold mb-4">R$ 150,00</p>
+                                <div class="flex justify-between items-center">
+                                    <button class="buy-button flex-grow mr-2" onclick="addToCart('VIP Permanente', 150.00)">COMPRAR AGORA</button>
+                                    <button class="info-button" onclick="showProductInfo('VIP Permanente')">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                            <circle cx="12" cy="12" r="10"></circle>
+                                            <line x1="12" y1="16" x2="12" y2="12"></line>
+                                            <line x1="12" y1="8" x2="12.01" y2="8"></line>
+                                        </svg>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Permanente Product 2 -->
+                        <div class="product-card" 
+                             data-product="Ilha Privada Permanente" 
+                             data-price="200.00" 
+                             data-description="Tenha sua própria ilha privada permanentemente. Um local exclusivo e luxuoso para você e seus amigos para sempre."
+                             data-features='["Ilha privada exclusiva permanente", "Acesso para até 20 amigos", "Mansão luxuosa", "Garagem para 15 veículos", "Heliporto duplo", "Acesso por barco, helicóptero ou avião", "Piscina e área de lazer", "Sistema de segurança avançado", "Cofre privado", "Bônus de 500.000 de dinheiro", "Decoração personalizável"]'
+                             data-duration="Permanente"
+                             data-badges='["Permanente", "Luxo", "Exclusivo"]'>
+                            <div class="p-4 text-center">
+                                <div class="text-center mb-2">
+                                    <img src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/image-xFj9uKuVfi8V61ImvT2heUhJL6KZsZ.png" alt="Ilha Privada Permanente" class="w-24 h-24 mx-auto">
+                                </div>
+                                <h3 class="text-lg font-semibold mb-1">Ilha Privada Permanente</h3>
+                                <p class="text-[#00c2ff] text-xl font-bold mb-4">R$ 200,00</p>
+                                <div class="flex justify-between items-center">
+                                    <button class="buy-button flex-grow mr-2" onclick="addToCart('Ilha Privada Permanente', 200.00)">COMPRAR AGORA</button>
+                                    <button class="info-button" onclick="showProductInfo('Ilha Privada Permanente')">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                            <circle cx="12" cy="12" r="10"></circle>
+                                            <line x1="12" y1="16" x2="12" y2="12"></line>
+                                            <line x1="12" y1="8" x2="12.01" y2="8"></line>
+                                        </svg>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+        
+        <!-- Footer -->
+        <footer class="py-4 text-center text-gray-500 text-xs">
+            <p>© 2024 Space Roleplay. Todos os direitos reservados.</p>
+            <p>O Space Roleplay não é afiliado de forma alguma à Rockstar Games Inc.</p>
+        </footer>
+    </div>
+    
+    <!-- Toast Notification -->
+    <div id="toast" class="toast">
+        <div class="flex items-center">
+            <svg id="toast-icon" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="mr-2">
+                <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
+                <polyline points="22 4 12 14.01 9 11.01"></polyline>
+            </svg>
+            <span id="toast-message">Produto adicionado ao carrinho!</span>
+        </div>
+    </div>
+    
+    <!-- Product Info Modal -->
+    <div id="product-modal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 id="modal-title" class="text-2xl font-bold text-[#00c2ff]"></h2>
+                <button id="close-modal" class="close-button">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="flex flex-col md:flex-row gap-6">
+                    <div class="md:w-1/3">
+                        <img src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/image-xFj9uKuVfi8V61ImvT2heUhJL6KZsZ.png" alt="VIP" class="w-full h-auto">
+                        <div class="mt-4">
+                            <p id="modal-price" class="text-2xl font-bold text-[#00c2ff] mb-2"></p>
+                            <p id="modal-duration" class="text-gray-400"></p>
+                        </div>
+                        <div class="mt-4" id="modal-badges">
+                            <!-- Badges will be added here dynamically -->
+                        </div>
+                    </div>
+                    <div class="md:w-2/3">
+                        <h3 class="text-xl font-semibold mb-4">Descrição</h3>
+                        <p id="modal-description" class="text-gray-300 mb-6"></p>
+                        
+                        <h3 class="text-xl font-semibold mb-4">Vantagens</h3>
+                        <div id="modal-features" class="mb-6">
+                            <!-- Features will be added here dynamically -->
+                        </div>
+                        
+                        <div class="bg-[#0a0a0a] p-4 rounded-lg mb-4">
+                            <h4 class="font-semibold mb-2">Importante</h4>
+                            <p class="text-gray-400 text-sm">Após a compra, o produto será ativado automaticamente em sua conta. Certifique-se de estar logado antes de finalizar a compra.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button id="modal-buy" class="buy-button w-full py-3 text-center font-bold bg-[#00c2ff] text-black hover:bg-[#00a8db]">COMPRAR AGORA</button>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        // Cart state
+        let cartState = {
+            items: [],
+            subtotal: 0,
+            appliedCoupon: null,
+            discount: 0,
+            total: 0
+        };
+        
+        // Initialize cart from localStorage
+        document.addEventListener('DOMContentLoaded', function() {
+            loadCartState();
+            updateCartCount();
+            
+            // Add event listeners for category buttons
+            const categoryButtons = document.querySelectorAll('.category-button');
+            categoryButtons.forEach(button => {
+                button.addEventListener('click', function() {
+                    const category = this.getAttribute('data-category');
+                    changeCategory(category);
+                });
+            });
+        });
+        
+        // Load cart state from localStorage
+        function loadCartState() {
+            const savedState = localStorage.getItem('cartState');
+            if (savedState) {
+                cartState = JSON.parse(savedState);
+            } else {
+                // Initialize with items from localStorage for backward compatibility
+                const cartItems = JSON.parse(localStorage.getItem('cartItems')) || [];
+                cartState.items = cartItems;
+                calculateCartTotals();
+                saveCartState();
+            }
+        }
+        
+        // Save cart state to localStorage
+        function saveCartState() {
+            localStorage.setItem('cartState', JSON.stringify(cartState));
+            // For backward compatibility
+            localStorage.setItem('cartItems', JSON.stringify(cartState.items));
+        }
+        
+        // Calculate cart totals (subtotal, discount, total)
+        function calculateCartTotals() {
+            // Calculate subtotal
+            cartState.subtotal = cartState.items.reduce((sum, item) => sum + parseFloat(item.price), 0);
+            
+            // Calculate discount amount
+            if (cartState.appliedCoupon) {
+                cartState.discount = cartState.subtotal * cartState.appliedCoupon.discount;
+            } else {
+                cartState.discount = 0;
+            }
+            
+            // Calculate total
+            cartState.total = cartState.subtotal - cartState.discount;
+        }
+        
+        // Add to cart function
+        function addToCart(productName, price) {
+            // Add new item
+            cartState.items.push({
+                name: productName,
+                price: price
+            });
+            
+            // Recalculate totals
+            calculateCartTotals();
+            
+            // Save to localStorage
+            saveCartState();
+            
+            // Update cart count
+            updateCartCount();
+            
+            // Show notification
+            const toast = document.getElementById('toast');
+            const toastMessage = document.getElementById('toast-message');
+            toastMessage.textContent = `${productName} adicionado ao carrinho!`;
+            toast.classList.add('show');
+            
+            // Hide notification after 3 seconds
+            setTimeout(() => {
+                toast.classList.remove('show');
+            }, 3000);
+        }
+        
+        // Update cart count
+        function updateCartCount() {
+            const cartCount = document.getElementById('cart-count');
+            cartCount.textContent = cartState.items.length;
+        }
+        
+        // Change category function
+        function changeCategory(category) {
+            // Remove active class from all category buttons
+            const categoryButtons = document.querySelectorAll('.category-button');
+            categoryButtons.forEach(button => {
+                button.classList.remove('active');
+            });
+            
+            // Add active class to selected category button
+            const selectedButton = document.querySelector(`.category-button[data-category="${category}"]`);
+            if (selectedButton) {
+                selectedButton.classList.add('active');
+            }
+            
+            // Hide all product categories
+            const productCategories = document.querySelectorAll('.product-category');
+            productCategories.forEach(productCategory => {
+                productCategory.classList.remove('active');
+            });
+            
+            // Show selected product category
+            const selectedCategory = document.getElementById(`${category}-category`);
+            if (selectedCategory) {
+                selectedCategory.classList.add('active');
+            }
+        }
+        
+        // Show product info function
+        function showProductInfo(productName) {
+            const productCard = document.querySelector(`[data-product="${productName}"]`);
+            const price = productCard.getAttribute('data-price');
+            const description = productCard.getAttribute('data-description');
+            const features = JSON.parse(productCard.getAttribute('data-features'));
+            const duration = productCard.getAttribute('data-duration');
+            const badges = JSON.parse(productCard.getAttribute('data-badges'));
+            
+            const modalTitle = document.getElementById('modal-title');
+            const modalPrice = document.getElementById('modal-price');
+            const modalDescription = document.getElementById('modal-description');
+            const modalFeatures = document.getElementById('modal-features');
+            const modalDuration = document.getElementById('modal-duration');
+            const modalBadges = document.getElementById('modal-badges');
+            const modalBuy = document.getElementById('modal-buy');
+            const modal = document.getElementById('product-modal');
+            
+            // Set modal content
+            modalTitle.textContent = productName;
+            modalPrice.textContent = `R$ ${price.replace('.', ',')}`;
+            modalDescription.textContent = description;
+            modalDuration.textContent = `Duração: ${duration}`;
+            
+            // Clear and add features
+            modalFeatures.innerHTML = '';
+            features.forEach(feature => {
+                const featureItem = document.createElement('div');
+                featureItem.className = 'feature-item';
+                featureItem.innerHTML = `
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feature-icon">
+                        <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
+                        <polyline points="22 4 12 14.01 9 11.01"></polyline>
+                    </svg>
+                    <span>${feature}</span>
+                `;
+                modalFeatures.appendChild(featureItem);
+            });
+            
+            // Clear and add badges
+            modalBadges.innerHTML = '';
+            badges.forEach(badge => {
+                const badgeElement = document.createElement('span');
+                badgeElement.className = 'badge';
+                badgeElement.textContent = badge;
+                modalBadges.appendChild(badgeElement);
+            });
+            
+            // Set buy button action
+            modalBuy.onclick = function() {
+                addToCart(productName, parseFloat(price));
+                modal.classList.remove('show');
+            };
+            
+            // Show modal
+            modal.classList.add('show');
+        }
+        
+        // Close modal when clicking the close button
+        document.getElementById('close-modal').addEventListener('click', () => {
+            document.getElementById('product-modal').classList.remove('show');
+        });
+        
+        // Close modal when clicking outside the content
+        document.getElementById('product-modal').addEventListener('click', (e) => {
+            if (e.target === document.getElementById('product-modal')) {
+                document.getElementById('product-modal').classList.remove('show');
+            }
+        });
+    </script>
+</body>
+</html>
